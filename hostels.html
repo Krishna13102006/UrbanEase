@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostels - UrbanEase</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hostel-hero {
+            padding: 120px 0 80px;
+            background: radial-gradient(circle at bottom left, rgba(167, 243, 208, 0.4), transparent 50%),
+                        radial-gradient(circle at top right, rgba(221, 214, 254, 0.4), transparent 50%);
+        }
+        .filter-section {
+            background-color: var(--bg-surface);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+        .listing-card img {
+            height: 220px;
+            object-fit: cover;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .listing-card {
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: var(--bg-surface);
+            overflow: hidden;
+        }
+        .listing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+        }
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--secondary);
+            color: var(--secondary-dark);
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .gender-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            backdrop-filter: blur(4px);
+        }
+        .price-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .amenity-icon {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html#home"><i class="fas fa-city me-2"></i>UrbanEase</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Hostels</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg">
+                            <li><a class="dropdown-item" href="index.html#housing"><i class="fas fa-home me-2"></i>Housing</a></li>
+                            <li><a class="dropdown-item" href="index.html#tiffin"><i class="fas fa-utensils me-2"></i>Tiffin</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="login.html" class="btn btn-primary btn-sm px-4 me-2">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="signup.html" class="btn btn-primary btn-sm px-4">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hostel-hero">
+        <div class="container text-center">
+            <span class="premium-badge mb-3">Student Living</span>
+            <h1 class="display-4 fw-bold mb-3" style="color: var(--text-main)">Affordable Hostels</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">Secure, budget-friendly accommodation designed for students and travelers.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="py-5">
+        <div class="container">
+            
+            <!-- Filters -->
+             <!-- Filters -->
+             <div class="filter-section">
+                <form id="hostelFilterForm">
+                    <div class="row g-3">
+                        <!-- Location -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Location</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="filterLoc" placeholder="City or Area">
+                            </div>
+                        </div>
+                        <!-- Gender -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Gender</label>
+                            <select class="form-select" id="filterGender">
+                                <option value="all" selected>Any</option>
+                                <option value="boys">Boys</option>
+                                <option value="girls">Girls</option>
+                            </select>
+                        </div>
+                         <!-- Budget -->
+                         <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Budget</label>
+                            <select class="form-select" id="filterBudget">
+                                <option value="all" selected>Any</option>
+                                <option value="under-5k">Under ₹5k</option>
+                                <option value="5k-10k">₹5k - ₹10k</option>
+                                <option value="above-10k">Above ₹10k</option>
+                            </select>
+                        </div>
+                         <!-- Room Type (Sharing) -->
+                         <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Room Type</label>
+                            <select class="form-select" id="filterSharing">
+                                <option value="all" selected>Any</option>
+                                <option value="shared">Shared Room</option>
+                                <option value="dorm">Dormitory</option>
+                            </select>
+                        </div>
+                        <!-- AC -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">AC</label>
+                            <select class="form-select" id="filterAC">
+                                <option value="all" selected>Any</option>
+                                <option value="ac">AC</option>
+                                <option value="non-ac">Non-AC</option>
+                            </select>
+                        </div>
+                        <!-- Search Button -->
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Search Hostels</button>
+                        </div>
+                    </div>
+                </form>
+             </div>
+
+             <!-- Listings -->
+             <div class="row g-4" id="hostelContainer">
+                
+                <!-- 1. Men's Hostel (Shared) -->
+                 <div class="col-md-4 listing-item" 
+                    data-loc="indiranagar" 
+                    data-gender="boys" 
+                    data-sharing="shared" 
+                    data-price="5500"
+                    data-food="no"
+                    data-ac="non-ac">
+                    <div class="listing-card position-relative">
+                        <span class="category-badge">Mens Hostel</span>
+                        <span class="gender-badge"><i class="fas fa-mars text-primary me-1"></i> Boys</span>
+                        <img src="https://images.unsplash.com/photo-1596276020587-8d0225bc9a21?q=80&w=2670&auto=format&fit=crop" class="card-img-top" alt="Hostel">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">Youth Hub Hostel</h5>
+                            <p class="text-muted small mb-3"><i class="fas fa-map-pin me-1"></i> Indiranagar</p>
+                            <div class="price-text mb-3">₹5,500<span class="fs-6 text-muted fw-normal">/mo</span></div>
+                            
+                            <div class="d-flex justify-content-between mb-3 border-bottom pb-3">
+                                <span class="amenity-icon"><i class="fas fa-lock"></i> Locker</span>
+                                <span class="amenity-icon"><i class="fas fa-wifi"></i> WiFi</span>
+                                <span class="amenity-icon"><i class="fas fa-gamepad"></i> Common</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-light text-dark border">Shared Room</span>
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+                 <!-- 2. Women's Hostel (Shared) -->
+                 <div class="col-md-4 listing-item"
+                    data-loc="koramangala" 
+                    data-gender="girls" 
+                    data-sharing="shared" 
+                    data-price="7500"
+                    data-food="yes"
+                    data-ac="non-ac">
+                    <div class="listing-card position-relative">
+                        <span class="category-badge">Ladies Hostel</span>
+                        <span class="gender-badge"><i class="fas fa-venus text-danger me-1"></i> Girls</span>
+                        <img src="https://images.unsplash.com/photo-1627199925244-123456789abc?q=80&w=2670&auto=format&fit=crop" class="card-img-top" alt="Ladies Hostel"> <!-- Placeholder URL -->
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">SafeStay Ladies Hostel</h5>
+                            <p class="text-muted small mb-3"><i class="fas fa-map-pin me-1"></i> Koramangala 1st Block</p>
+                            <div class="price-text mb-3">₹7,500<span class="fs-6 text-muted fw-normal">/mo</span></div>
+                            
+                            <div class="d-flex justify-content-between mb-3 border-bottom pb-3">
+                                <span class="amenity-icon"><i class="fas fa-shield-alt"></i> Security</span>
+                                <span class="amenity-icon"><i class="fas fa-utensils"></i> Mess</span>
+                                <span class="amenity-icon"><i class="fas fa-bus"></i> Transport</span>
+                            </div>
+                             <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-light text-dark border">Shared Room</span>
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+                 <!-- 3. Travelers Hostel (Dorm) -->
+                 <div class="col-md-4 listing-item"
+                    data-loc="mg road" 
+                    data-gender="unisex" 
+                    data-sharing="dorm" 
+                    data-price="4000"
+                    data-food="no"
+                    data-ac="ac">
+                    <div class="listing-card position-relative">
+                        <span class="category-badge">Backpacker Hostel</span>
+                        <span class="gender-badge"><i class="fas fa-globe text-success me-1"></i> Unisex</span>
+                        <img src="https://images.unsplash.com/photo-1555854877-bab0e56f4bab?q=80&w=2669&auto=format&fit=crop" class="card-img-top" alt="Backpacker Hostel">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">City Center Backpackers</h5>
+                            <p class="text-muted small mb-3"><i class="fas fa-map-pin me-1"></i> MG Road</p>
+                            <div class="price-text mb-3">₹4,000<span class="fs-6 text-muted fw-normal">/mo</span></div>
+                            
+                            <div class="d-flex justify-content-between mb-3 border-bottom pb-3">
+                                <span class="amenity-icon"><i class="fas fa-beer"></i> Bar</span>
+                                <span class="amenity-icon"><i class="fas fa-wifi"></i> WiFi</span>
+                                <span class="amenity-icon"><i class="fas fa-map"></i> Tours</span>
+                            </div>
+                             <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-light text-dark border">Dormitory</span>
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+             </div>
+
+        </div>
+    </section>
+
+    <!-- JS Logic -->
+    <script>
+        function filterListings() {
+            const loc = document.getElementById('filterLoc').value.toLowerCase();
+            const gender = document.getElementById('filterGender').value;
+            const sharing = document.getElementById('filterSharing').value;
+            const budget = document.getElementById('filterBudget').value;
+            const food = document.getElementById('filterFood').value;
+            const ac = document.getElementById('filterAC').value;
+
+            document.querySelectorAll('.listing-item').forEach(item => {
+                let show = true;
+                
+                // Location
+                if (loc && !item.dataset.loc.includes(loc)) show = false;
+                
+                // Gender
+                if (gender !== 'all' && item.dataset.gender !== gender) show = false;
+                
+                // Room Type (Sharing)
+                if (sharing !== 'all' && item.dataset.sharing !== sharing) show = false;
+                
+                // Budget
+                const p = parseInt(item.dataset.price);
+                if (budget !== 'all') {
+                    if (budget === 'under-5k' && p >= 5000) show = false;
+                    else if (budget === '5k-10k' && (p < 5000 || p > 10000)) show = false;
+                    else if (budget === 'above-10k' && p <= 10000) show = false;
+                }
+
+                // Food
+                if (food !== 'all' && item.dataset.food !== food) show = false;
+
+                // AC
+                if (ac !== 'all' && item.dataset.ac !== ac) show = false;
+
+                item.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        document.getElementById('hostelFilterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            filterListings();
+        });
+    </script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartments - UrbanEase</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .apartments-hero {
+            padding: 120px 0 80px;
+            background: radial-gradient(circle at bottom right, rgba(221, 214, 254, 0.4), transparent 50%),
+                        radial-gradient(circle at top left, rgba(167, 243, 208, 0.3), transparent 50%);
+        }
+        .filter-section {
+            background-color: var(--bg-surface);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+        .apartment-card img {
+            height: 250px;
+            object-fit: cover;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .apartment-card {
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: var(--bg-surface);
+            overflow: hidden;
+        }
+        .apartment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+        }
+        .apt-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            backdrop-filter: blur(4px);
+        }
+        .price-tag {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .apt-location {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html#home"><i class="fas fa-city me-2"></i>UrbanEase</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Apartments</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg">
+                            <li><a class="dropdown-item" href="index.html#housing"><i class="fas fa-home me-2"></i>Housing</a></li>
+                            <li><a class="dropdown-item" href="index.html#tiffin"><i class="fas fa-utensils me-2"></i>Tiffin</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="login.html" class="btn btn-primary btn-sm px-4 me-2">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="signup.html" class="btn btn-primary btn-sm px-4">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="apartments-hero">
+        <div class="container text-center">
+            <span class="premium-badge mb-3">Verified Listings</span>
+            <h1 class="display-4 fw-bold mb-3" style="color: var(--text-main)">Find Your Perfect Space</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">Explore premium apartments tailored to your needs. Rent or buy with confidence.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="py-5">
+        <div class="container">
+            
+            <!-- Filters -->
+            <div class="filter-section">
+                <form id="filterForm">
+                    <div class="row g-3">
+                        <!-- Location -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Location</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="filterLocation" placeholder="Enter City or Area">
+                            </div>
+                        </div>
+                        <!-- Buy / Rent -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Type</label>
+                            <select class="form-select" id="filterType">
+                                <option value="all" selected>All</option>
+                                <option value="rent">For Rent</option>
+                                <option value="buy">For Sale</option>
+                            </select>
+                        </div>
+                        <!-- Budget -->
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Budget Range</label>
+                            <select class="form-select" id="filterBudget">
+                                <option value="all" selected>Any Price</option>
+                                <option value="under-15k">Under ₹15k</option>
+                                <option value="15k-30k">₹15k - ₹30k</option>
+                                <option value="30k-50k">₹30k - ₹50k</option>
+                                <option value="above-50k">Above ₹50k (Rent)</option>
+                                <option value="buy-under-1cr">Under ₹1 Cr (Buy)</option>
+                                <option value="buy-above-1cr">Above ₹1 Cr (Buy)</option>
+                            </select>
+                        </div>
+                        <!-- Size -->
+                        <div class="col-md-4">
+                             <label class="form-label text-muted small fw-bold">Size</label>
+                             <select class="form-select" id="filterSize">
+                                 <option value="all" selected>All</option>
+                                 <option value="1rk">1 RK</option>
+                                 <option value="1bhk">1 BHK</option>
+                                 <option value="2bhk">2 BHK</option>
+                                 <option value="3bhk">3 BHK</option>
+                                 <option value="4bhk+">4 BHK+</option>
+                             </select>
+                        </div>
+                        <!-- Furnishing -->
+                         <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Furnishing</label>
+                            <select class="form-select" id="filterFurnishing">
+                                <option value="all" selected>All</option>
+                                <option value="fully-furnished">Fully Furnished</option>
+                                <option value="semi-furnished">Semi Furnished</option>
+                                <option value="unfurnished">Unfurnished</option>
+                            </select>
+                         </div>
+                         <!-- Tenant Type -->
+                         <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Tenant Preference</label>
+                            <select class="form-select" id="filterTenant">
+                                <option value="all" selected>All</option>
+                                <option value="bachelor">Bachelor</option>
+                                <option value="family">Family</option>
+                                <option value="any">Anyone</option>
+                            </select>
+                         </div>
+                        <div class="col-12 mt-4 text-center">
+                            <button type="submit" class="btn btn-primary px-5">Search Apartments</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listings Grid -->
+            <div class="row g-4" id="listingsContainer">
+                <!-- Item 1 -->
+                <div class="col-md-4 apartment-item" 
+                    data-location="koramangala" 
+                    data-type="rent" 
+                    data-size="2bhk" 
+                    data-budget="25000" 
+                    data-furnishing="semi-furnished" 
+                    data-tenant="family">
+                    <div class="apartment-card position-relative">
+                        <span class="apt-badge">For Rent</span>
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2670&auto=format&fit=crop" class="card-img-top" alt="Bohemian Apartment">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">Bohemian Light-Filled Flat</h5>
+                            <p class="apt-location mb-3"><i class="fas fa-map-pin me-1"></i> Koramangala, Bangalore</p>
+                            <div class="d-flex justify-content-between align-items-end mb-3">
+                                <div class="price-tag">₹25,000<span class="fs-6 text-muted fw-normal">/mo</span></div>
+                                <div class="text-warning small"><i class="fas fa-star"></i> 4.8 (24)</div>
+                            </div>
+                            <div class="d-flex gap-3 text-muted small border-top pt-3">
+                                <span><i class="fas fa-bed me-1"></i> 2 BHK</span>
+                                <span><i class="fas fa-couch me-1"></i> Semi</span>
+                                <span><i class="fas fa-user-friends me-1"></i> Family</span>
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-3">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="col-md-4 apartment-item"
+                    data-location="indiranagar" 
+                    data-type="buy" 
+                    data-size="3bhk" 
+                    data-budget="12000000" 
+                    data-furnishing="unfurnished" 
+                    data-tenant="any">
+                    <div class="apartment-card position-relative">
+                        <span class="apt-badge">For Sale</span>
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=2580&auto=format&fit=crop" class="card-img-top" alt="Modern Loft">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">Modern Minimalist Loft</h5>
+                            <p class="apt-location mb-3"><i class="fas fa-map-pin me-1"></i> Indiranagar, Bangalore</p>
+                            <div class="d-flex justify-content-between align-items-end mb-3">
+                                <div class="price-tag">₹1.2 Cr</div>
+                                <div class="text-warning small"><i class="fas fa-star"></i> 5.0 (12)</div>
+                            </div>
+                            <div class="d-flex gap-3 text-muted small border-top pt-3">
+                                <span><i class="fas fa-bed me-1"></i> 3 BHK</span>
+                                <span><i class="fas fa-couch me-1"></i> Unfurnished</span>
+                                <span><i class="fas fa-users me-1"></i> Anyone</span>
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-3">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Item 3 -->
+                 <div class="col-md-4 apartment-item"
+                    data-location="hsr layout" 
+                    data-type="rent" 
+                    data-size="1rk"
+                    data-budget="18000" 
+                    data-furnishing="fully-furnished" 
+                    data-tenant="bachelor">
+                    <div class="apartment-card position-relative">
+                        <span class="apt-badge bg-success text-white">New</span>
+                        <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=2670&auto=format&fit=crop" class="card-img-top" alt="Cozy Studio">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-1">Cozy City Studio</h5>
+                            <p class="apt-location mb-3"><i class="fas fa-map-pin me-1"></i> HSR Layout, Bangalore</p>
+                            <div class="d-flex justify-content-between align-items-end mb-3">
+                                <div class="price-tag">₹18,000<span class="fs-6 text-muted fw-normal">/mo</span></div>
+                                <div class="text-warning small"><i class="fas fa-star"></i> 4.5 (8)</div>
+                            </div>
+                            <div class="d-flex gap-3 text-muted small border-top pt-3">
+                                <span><i class="fas fa-bed me-1"></i> 1 RK</span>
+                                <span><i class="fas fa-couch me-1"></i> Fully</span>
+                                <span><i class="fas fa-user me-1"></i> Bachelor</span>
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-3">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Filter Logic -->
+    <script>
+        // Dynamic Budget Options
+        const typeSelect = document.getElementById('filterType');
+        const budgetSelect = document.getElementById('filterBudget');
+
+        const rentOptions = [
+            { value: 'all', text: 'Any Price' },
+            { value: 'under-15k', text: 'Under ₹15k' },
+            { value: '15k-30k', text: '₹15k - ₹30k' },
+            { value: '30k-50k', text: '₹30k - ₹50k' },
+            { value: 'above-50k', text: 'Above ₹50k' }
+        ];
+
+        const buyOptions = [
+            { value: 'all', text: 'Any Price' },
+            { value: 'under-50l', text: 'Under ₹50 Lakhs' },
+            { value: '50l-1cr', text: '₹50 Lakhs - ₹1 Cr' },
+            { value: 'above-1cr', text: 'Above ₹1 Cr' }
+        ];
+
+        const allOptions = [
+            { value: 'all', text: 'Any Price' }
+        ];
+
+        function updateBudgetOptions() {
+            const type = typeSelect.value;
+            let options = allOptions;
+
+            if (type === 'rent') {
+                options = rentOptions;
+            } else if (type === 'buy') {
+                options = buyOptions;
+            }
+
+            budgetSelect.innerHTML = '';
+            options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.text;
+                budgetSelect.appendChild(option);
+            });
+        }
+
+        typeSelect.addEventListener('change', updateBudgetOptions);
+        // Initialize logic
+        updateBudgetOptions();
+
+        // Search Logic
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const location = document.getElementById('filterLocation').value.toLowerCase();
+            const type = document.getElementById('filterType').value;
+            const size = document.getElementById('filterSize').value;
+            const budget = document.getElementById('filterBudget').value;
+            const furnishing = document.getElementById('filterFurnishing').value;
+            const tenant = document.getElementById('filterTenant').value;
+
+            const items = document.querySelectorAll('.apartment-item');
+
+            items.forEach(item => {
+                let show = true;
+                
+                // Location Filter (Partial Match)
+                const itemLocation = item.getAttribute('data-location').toLowerCase();
+                if (location && !itemLocation.includes(location)) {
+                    show = false;
+                }
+
+                // Type Filter
+                if (type !== 'all' && item.getAttribute('data-type') !== type) {
+                    show = false;
+                }
+
+                 // Size Filter
+                 if (size !== 'all' && item.getAttribute('data-size') !== size) {
+                    show = false;
+                }
+
+                 // Furnishing Filter
+                 if (furnishing !== 'all' && item.getAttribute('data-furnishing') !== furnishing) {
+                    show = false;
+                }
+
+                 // Tenant Filter
+                 const itemTenant = item.getAttribute('data-tenant');
+                 if (tenant !== 'all' && itemTenant !== 'any' && itemTenant !== tenant) {
+                    show = false;
+                }
+
+                // Budget Filter
+                const price = parseInt(item.getAttribute('data-budget'));
+                if (budget !== 'all') {
+                    // Rent Logic
+                    if (budget === 'under-15k' && price >= 15000) show = false;
+                    else if (budget === '15k-30k' && (price < 15000 || price > 30000)) show = false;
+                    else if (budget === '30k-50k' && (price < 30000 || price > 50000)) show = false;
+                    else if (budget === 'above-50k' && price <= 50000) show = false;
+                    
+                    // Buy Logic
+                    else if (budget === 'under-50l' && price >= 5000000) show = false;
+                    else if (budget === '50l-1cr' && (price < 5000000 || price > 10000000)) show = false;
+                    else if (budget === 'above-1cr' && price <= 10000000) show = false;
+                }
+
+                item.style.display = show ? 'block' : 'none';
+            });
+        });
+    </script>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
