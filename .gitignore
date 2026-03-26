@@ -2,11 +2,17 @@
 .env
 *.env
 backend/.env
+venv/
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
 
 # IDEs
 .vscode/
 .idea/
+
+# Images
+static/images/database_images/*
+!static/images/database_images/.gitkeep

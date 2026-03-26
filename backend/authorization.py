@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 import os
 import random
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if os.environ.get('VERCEL') is None:
+    load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 app = Flask(
     __name__,
@@ -27,12 +28,15 @@ database_url = os.environ.get('DATABASE_URL')
 if database_url and database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'postgresql://postgres:9979@localhost:5432/UrbanEase'
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "pool_pre_ping": True,
+    "pool_recycle": 300,
+    "pool_size": 5,
+    "max_overflow": 2,
+}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-
-with app.app_context():
-    db.create_all()
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587

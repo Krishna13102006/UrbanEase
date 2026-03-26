@@ -4,8 +4,7 @@ from backend.admin import ProviderProfile, ProviderProfilePic, HouseListing, Hou
 from werkzeug.utils import secure_filename
 import os
 import time
-import cloudinary
-import cloudinary.uploader
+from backend.storage import upload_image, delete_image
 provider_bp = Blueprint('provider', __name__)
 
                                                                    
@@ -192,12 +191,9 @@ def apply_verification():
                 filename = f"provider_{profile_id}_{timestamp}.jpg"
                 filepath = os.path.join(IMAGES_FOLDER, filename)
                 
-                upload_result = cloudinary.uploader.upload(
-                    file,
-                    folder="urbanease/providers",
-                    allowed_formats=['jpg', 'jpeg', 'png', 'webp']
-                )
-                profile_image_path = upload_result.get('secure_url')
+                file_bytes = file.read()
+                secure_name = secure_filename(file.filename)
+                profile_image_path = upload_image(file_bytes, secure_name, folder="urbanease/providers")
                 
                                                    
                 existing_pic = ProviderProfilePic.query.filter_by(provider_id=profile_id).first()
@@ -371,12 +367,9 @@ def add_house_listing():
                 if size > MAX_FILE_SIZE:
                     continue                                   
                 
-                upload_result = cloudinary.uploader.upload(
-                    file,
-                    folder="urbanease/uploads",
-                    allowed_formats=['jpg', 'jpeg', 'png', 'webp']
-                )
-                filename = upload_result.get('secure_url')
+                file_bytes = file.read()
+                secure_name = secure_filename(file.filename)
+                filename = upload_image(file_bytes, secure_name, folder="urbanease/uploads")
                 
                                      
                                                                 
@@ -534,12 +527,9 @@ def add_tiffin_listing():
                 if size > MAX_FILE_SIZE:
                     continue 
                 
-                upload_result = cloudinary.uploader.upload(
-                    file,
-                    folder="urbanease/services",
-                    allowed_formats=['jpg', 'jpeg', 'png', 'webp']
-                )
-                filename = upload_result.get('secure_url')
+                file_bytes = file.read()
+                secure_name = secure_filename(file.filename)
+                filename = upload_image(file_bytes, secure_name, folder="urbanease/services")
                 
                                      
                 new_image = TiffinImage(
@@ -634,12 +624,9 @@ def add_meal(listing_id):
              return jsonify({'success': False, 'message': 'No selected file'}), 400
              
         if file and allowed_file(file.filename):
-            upload_result = cloudinary.uploader.upload(
-                file,
-                folder="urbanease/services",
-                allowed_formats=['jpg', 'jpeg', 'png', 'webp']
-            )
-            filename = upload_result.get('secure_url')
+            file_bytes = file.read()
+            secure_name = secure_filename(file.filename)
+            filename = upload_image(file_bytes, secure_name, folder="urbanease/services")
             
             new_meal = Meal(
                 tiffin_listing_id=listing.id,
@@ -735,12 +722,9 @@ def edit_meal(meal_id):
         if 'meal_image' in request.files:
             file = request.files['meal_image']
             if file.filename != '' and allowed_file(file.filename):
-                upload_result = cloudinary.uploader.upload(
-                    file,
-                    folder="urbanease/services",
-                    allowed_formats=['jpg', 'jpeg', 'png', 'webp']
-                )
-                meal.meal_image_path = upload_result.get('secure_url')
+                file_bytes = file.read()
+                secure_name = secure_filename(file.filename)
+                meal.meal_image_path = upload_image(file_bytes, secure_name, folder="urbanease/services")
         
         db.session.commit()
         
